@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Button,
   Divider,
+  DropEvent,
   FileUpload,
   Flex,
   FlexItem,
@@ -14,6 +15,9 @@ import {
   MenuToggle,
   MenuToggleElement,
   Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   ModalVariant,
   Select,
   SelectList,
@@ -68,7 +72,7 @@ export const AddVectorStoreModal: React.FunctionComponent<AddVectorStoreModalPro
   const [filename, setFilename] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileInputChange = (_event: React.ChangeEvent<HTMLInputElement>, file: File) => {
+  const handleFileInputChange = (_event: DropEvent, file: File) => {
     setFilename(file.name);
     setIsLoading(true);
     
@@ -124,7 +128,7 @@ export const AddVectorStoreModal: React.FunctionComponent<AddVectorStoreModalPro
 
   const sidebarPanel = (
     <SidebarPanel width={{ default: 'width_25' }} style={{ padding: '1rem', backgroundColor: 'var(--pf-v6-global--BackgroundColor--100)' }}>
-      <ToggleGroup aria-label="Vector store type" isVertical>
+      <ToggleGroup aria-label="Vector store type">
         <ToggleGroupItem
           text="In memory"
           buttonId="in-memory"
@@ -144,27 +148,23 @@ export const AddVectorStoreModal: React.FunctionComponent<AddVectorStoreModalPro
   return (
     <Modal
       variant={ModalVariant.large}
-      title="Add vector store"
-      description="Create a new vector store to ground your model with custom data within your playground."
       isOpen={isOpen}
       onClose={handleModalClose}
-      actions={[
-        <Button key="create" variant="primary" onClick={handleCreate} isDisabled={!name}>
-          Create
-        </Button>,
-        <Button key="cancel" variant="link" onClick={handleModalClose}>
-          Cancel
-        </Button>,
-      ]}
+      id="add-vector-store-modal"
     >
-      <Sidebar hasGutter>
-        {sidebarPanel}
-        <SidebarContent style={{ padding: '1rem' }}>
-          {vectorStoreType === 'in-memory' ? (
-            <>
-              <Title headingLevel="h3" size="md" style={{ marginBottom: '1rem' }}>
-                New vector store
-              </Title>
+      <ModalHeader title="Add vector store" />
+      <ModalBody>
+        <Sidebar hasGutter>
+          {sidebarPanel}
+          <SidebarContent style={{ padding: '1rem' }}>
+            {vectorStoreType === 'in-memory' ? (
+              <>
+                <Title headingLevel="h3" size="md" style={{ marginBottom: '0.5rem' }}>
+                  New vector store
+                </Title>
+                <p style={{ marginBottom: '1rem', color: 'var(--pf-v6-global--Color--200)' }}>
+                  Create a new vector store to ground your model with custom data within your playground.
+                </p>
 
               {/* File Upload Section */}
               <FormGroup label="Upload documents" fieldId="file-upload">
@@ -331,6 +331,15 @@ export const AddVectorStoreModal: React.FunctionComponent<AddVectorStoreModalPro
           )}
         </SidebarContent>
       </Sidebar>
+      </ModalBody>
+      <ModalFooter>
+        <Button key="create" variant="primary" onClick={handleCreate} isDisabled={!name} id="create-vector-store-button">
+          Create
+        </Button>
+        <Button key="cancel" variant="link" onClick={handleModalClose} id="cancel-vector-store-button">
+          Cancel
+        </Button>
+      </ModalFooter>
     </Modal>
   );
 };
