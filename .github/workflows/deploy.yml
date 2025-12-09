@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          ASSET_PATH: /rh-ai-prototype/
+          ASSET_PATH: /rhoai-integration-prototype/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
