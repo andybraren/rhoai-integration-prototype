@@ -1,0 +1,28 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Low fidelity mode styling */
+body.fidelity-low {
+  /* Apply Comic Sans font family */
+  font-family: "Comic Sans MS", "Comic Sans", cursive !important;
+  
+  /* Grayscale filter */
+  filter: grayscale(100%);
+}
+
+body.fidelity-low * {
+  /* Apply Comic Sans to all elements */
+  font-family: "Comic Sans MS", "Comic Sans", cursive !important;
+}
+
+#apollo-canvas-masthead h1 {
+  margin: 6px;
+}
+
+#apollo-canvas-masthead {
+  background-color: var(--pf-v6-global--BackgroundColor--200);
+  color: var(--pf-v6-global--Color--100);
+}
