@@ -95,10 +95,12 @@ module.exports = (env) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src', 'index.html'),
+        publicPath: ASSET_PATH,
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src', 'index.html'),
         filename: '404.html',
+        publicPath: ASSET_PATH,
       }),
       new Dotenv({
         systemvars: true,
