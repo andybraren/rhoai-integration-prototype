@@ -36,6 +36,8 @@ import { MyAgents } from '@app/GenAIStudio/MyAgents/MyAgents';
 import { PromptEngineering } from '@app/GenAIStudio/PromptEngineering/PromptEngineering';
 import { KnowledgeSources } from '@app/GenAIStudio/KnowledgeSources/KnowledgeSources';
 import { AutoRAG } from '@app/GenAIStudio/AutoRAG/AutoRAG';
+import { PromptLab } from '@app/GenAIStudio/PromptLab/PromptLab';
+import { PromptDetails } from '@app/GenAIStudio/PromptLab/PromptDetails';
 
 // Observability - imported from migrated src-3.0
 import { Tracing } from '@app/Observability/Tracing/Tracing';
@@ -87,7 +89,18 @@ import { CreateTier } from '@app/Settings/Tiers/CreateTier';
 import { EditTier } from '@app/Settings/Tiers/EditTier';
 
 // Icons
-import { createFontAwesomeIcon } from '@app/utils/IconHelper';
+import {
+  createFontAwesomeIcon,
+  createHomeNavIcon,
+  createProjectsNavIcon,
+  createAiHubNavIcon,
+  createGenAiStudioNavIcon,
+  createDevelopAndTrainNavIcon,
+  createApplicationsNavIcon,
+  createLearningResourcesNavIcon,
+  createSettingsNavIcon,
+  createObserveAndMonitorNavIcon,
+} from '@app/utils/IconHelper';
 import { createConnectionsIcon } from '@app/Connections/ConnectionsIcon';
 
 export interface IAppRoute {
@@ -120,7 +133,7 @@ const routes: AppRouteConfig[] = [
     label: 'Home',
     path: '/',
     title: 'RHOAI 3.1 Console | Home',
-    icon: createFontAwesomeIcon('fa-light fa-house'),
+    icon: createHomeNavIcon(),
   },
   {
     element: <Projects />,
@@ -128,7 +141,7 @@ const routes: AppRouteConfig[] = [
     label: 'Projects',
     path: '/projects',
     title: 'RHOAI 3.1 Console | Projects',
-    icon: createFontAwesomeIcon('fa-light fa-folder'),
+    icon: createProjectsNavIcon(),
   },
   {
     element: <ProjectDetail />,
@@ -146,7 +159,7 @@ const routes: AppRouteConfig[] = [
   },
   {
     label: 'AI hub',
-    icon: createFontAwesomeIcon('fa-light fa-brain'),
+    icon: createAiHubNavIcon(),
     routes: [
       {
         element: <ModelCatalog />,
@@ -173,7 +186,7 @@ const routes: AppRouteConfig[] = [
   },
   {
     label: 'Gen AI studio',
-    icon: createFontAwesomeIcon('fa-light fa-brain'),
+    icon: createGenAiStudioNavIcon(),
     routes: [
       {
         element: <AvailableAIAssets />,
@@ -229,12 +242,18 @@ const routes: AppRouteConfig[] = [
         title: 'RHOAI 3.1 Console | Gen AI Studio - AutoRAG',
       },
       {
+        element: <PromptLab />,
+        exact: true,
+        label: 'Prompt lab',
+        path: '/gen-ai-studio/prompt-lab',
+        title: 'RHOAI 3.1 Console | Gen AI Studio - Prompt Lab',
+      },
+      {
         element: <APIKeys />,
         exact: true,
         label: 'API keys',
         path: '/gen-ai-studio/api-keys',
         title: 'RHOAI 3.1 Console | Gen AI Studio - API Keys',
-        new: true,
       },
       {
         element: <APIKeyDetails />,
@@ -252,7 +271,7 @@ const routes: AppRouteConfig[] = [
   },
   {
     label: 'Develop & train',
-    icon: createFontAwesomeIcon('fa-light fa-flask'),
+    icon: createDevelopAndTrainNavIcon(),
     routes: [
       {
         element: <Workbenches />,
@@ -366,7 +385,7 @@ const routes: AppRouteConfig[] = [
   },
   {
     label: 'Observe & monitor',
-    icon: createFontAwesomeIcon('fa-light fa-magnifying-glass'),
+    icon: createObserveAndMonitorNavIcon(),
     routes: [
       {
         element: <Dashboard />,
@@ -397,19 +416,11 @@ const routes: AppRouteConfig[] = [
     label: 'Learning resources',
     path: '/learning-resources',
     title: 'RHOAI 3.1 Console | Learning Resources',
-    icon: createFontAwesomeIcon('fa-light fa-book'),
-  },
-  {
-    element: <HomePageVariations />,
-    exact: true,
-    label: 'Home page variations',
-    path: '/home-variations',
-    title: 'RHOAI 3.1 Console | Home Page Variations',
-    icon: createFontAwesomeIcon('fa-light fa-table-cells-large'),
+    icon: createLearningResourcesNavIcon(),
   },
   {
     label: 'Applications',
-    icon: createFontAwesomeIcon('fa-light fa-code'),
+    icon: createApplicationsNavIcon(),
     routes: [
       {
         element: <Enabled />,
@@ -429,7 +440,7 @@ const routes: AppRouteConfig[] = [
   },
   {
     label: 'Settings',
-    icon: createFontAwesomeIcon('fa-light fa-gear'),
+    icon: createSettingsNavIcon(),
     routes: [
       {
         label: 'Cluster settings',
@@ -520,12 +531,26 @@ const routes: AppRouteConfig[] = [
       },
     ],
   },
+  {
+    element: <HomePageVariations />,
+    exact: true,
+    label: 'Home page variations',
+    path: '/home-variations',
+    title: 'RHOAI 3.1 Console | Home Page Variations',
+    icon: createFontAwesomeIcon('fa-light fa-table-cells-large'),
+  },
   // Additional routes not in navigation
   {
     element: <DeployModelWizard />,
     exact: true,
     path: '/ai-hub/deployments/deploy',
     title: 'RHOAI 3.1 Console | Deploy Model',
+  },
+  {
+    element: <PromptDetails />,
+    exact: true,
+    path: '/gen-ai-studio/prompt-lab/:promptId',
+    title: 'RHOAI 3.1 Console | Gen AI Studio - Prompt Details',
   },
   {
     element: <RegisterModel />,

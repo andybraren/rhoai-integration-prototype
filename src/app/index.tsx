@@ -9,17 +9,11 @@ import { FeatureFlagsProvider } from '@app/utils/FeatureFlagsContext';
 import { UserProfileProvider } from '@app/utils/UserProfileContext';
 import '@app/app.css';
 
-// Get the base path from the environment variable used in webpack config
-// This ensures routing works correctly when deployed to GitHub Pages
-// Remove trailing slash and handle root path correctly
-const assetPath = process.env.ASSET_PATH || '/';
-const basename = assetPath === '/' ? '' : assetPath.replace(/\/$/, '');
-
 const App: React.FunctionComponent = () => (
   <FeatureFlagsProvider>
     <UserProfileProvider>
       <ThemeProvider>
-        <Router basename={basename}>
+        <Router>
           <AppLayout>
             <AppRoutes />
           </AppLayout>

@@ -17,6 +17,9 @@ import {
   CubesIcon,
 } from '@patternfly/react-icons';
 import { CapabilityCard } from './CapabilityCardVariations';
+import AiHubNavIcon from '../../../images/icons/AiHubNavIcon';
+import GenAiStudioNavIcon from '../../../images/icons/GenAiStudioNavIcon';
+import DevelopAndTrainNavIcon from '../../../images/icons/DevelopAndTrainNavIcon';
 
 type CapabilityCategory = 'ai-hub' | 'gen-ai' | 'develop' | 'observe';
 
@@ -24,9 +27,10 @@ interface CapabilityData {
   title: string;
   description: string;
   icon: React.ReactNode;
-  path: string;
+  path?: string;
   category: CapabilityCategory;
   isNew?: boolean;
+  onClick?: () => void;
 }
 
 interface CapabilityGroupVariation2CardsProps {
@@ -40,7 +44,7 @@ const categoryInfo: Record<
 > = {
   'ai-hub': {
     label: 'AI Hub',
-    icon: <CubesIcon />,
+    icon: <AiHubNavIcon />,
     description: (
       <>
         Discover, manage and deploy models in the <strong>AI hub</strong>
@@ -48,17 +52,17 @@ const categoryInfo: Record<
     ),
   },
   'gen-ai': {
-    label: 'Generative AI Studio',
-    icon: <BrainIcon />,
+    label: 'Gen AI studio',
+    icon: <GenAiStudioNavIcon />,
     description: (
       <>
-        Build and experiment with generative AI in the <strong>Generative AI Studio</strong>
+        Build and experiment with generative AI in the <strong>Gen AI studio</strong>
       </>
     ),
   },
   develop: {
     label: 'Develop & Train',
-    icon: <CodeBranchIcon />,
+    icon: <DevelopAndTrainNavIcon />,
     description: (
       <>
         Create and train AI/ML models with <strong>Develop & Train</strong>
@@ -87,8 +91,30 @@ const CapabilityGroupVariation2Cards: React.FunctionComponent<
     'observe',
   ];
 
+  // Initialize selectedCategory from localStorage or default to null (none selected)
+  const getInitialCategory = (): CapabilityCategory | null => {
+    const stored = localStorage.getItem('homeCapabilitiesSelectedCategory');
+    if (stored === 'null' || stored === null) {
+      return null;
+    }
+    if (stored && categoriesToShow.includes(stored as CapabilityCategory)) {
+      return stored as CapabilityCategory;
+    }
+    return null;
+  };
+
   const [selectedCategory, setSelectedCategory] =
-    React.useState<CapabilityCategory>(categoriesToShow[0]);
+    React.useState<CapabilityCategory | null>(getInitialCategory);
+
+  // Save selectedCategory to localStorage when it changes
+  React.useEffect(() => {
+    localStorage.setItem('homeCapabilitiesSelectedCategory', selectedCategory || 'null');
+  }, [selectedCategory]);
+
+  // Toggle selection: if clicking the same category, deselect it
+  const handleCategoryClick = (category: CapabilityCategory) => {
+    setSelectedCategory(selectedCategory === category ? null : category);
+  };
 
   // Group capabilities by category
   const groupedCapabilities: Record<CapabilityCategory, CapabilityData[]> = {
@@ -116,7 +142,7 @@ const CapabilityGroupVariation2Cards: React.FunctionComponent<
               >
                 <CardHeader
                   selectableActions={{
-                    onClickAction: () => setSelectedCategory(category),
+                    onClickAction: () => handleCategoryClick(category),
                     selectableActionAriaLabelledby: `category-label-${category}`,
                   }}
                 >
@@ -124,8 +150,8 @@ const CapabilityGroupVariation2Cards: React.FunctionComponent<
                     <FlexItem>
                       <div
                         style={{
-                          fontSize: '36px',
-                          minWidth: '36px',
+                          fontSize: '24px',
+                          minWidth: '24px',
                         }}
                       >
                         {categoryInfo[category].icon}
@@ -143,17 +169,19 @@ const CapabilityGroupVariation2Cards: React.FunctionComponent<
           ))}
         </Grid>
       </StackItem>
-      <StackItem>
-        <div data-testid={`capability-group-${selectedCategory}`}>
-          <Grid hasGutter sm={6} md={4} lg={3}>
-            {groupedCapabilities[selectedCategory].map((capability) => (
-              <GridItem key={capability.title}>
-                <CapabilityCard capability={capability} layout="editorial" />
-              </GridItem>
-            ))}
-          </Grid>
-        </div>
-      </StackItem>
+      {selectedCategory && (
+        <StackItem>
+          <div data-testid={`capability-group-${selectedCategory}`}>
+            <Grid hasGutter sm={6} md={4} lg={3}>
+              {groupedCapabilities[selectedCategory].map((capability) => (
+                <GridItem key={capability.title}>
+                  <CapabilityCard capability={capability} layout="editorial" />
+                </GridItem>
+              ))}
+            </Grid>
+          </div>
+        </StackItem>
+      )}
     </Stack>
   );
 };
