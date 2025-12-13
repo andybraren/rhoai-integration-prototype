@@ -727,8 +727,9 @@ const AutoRAG: React.FunctionComponent = () => {
     if (selectedFoundationModels.size !== initialFoundationModels.size) {
       return true;
     }
-    for (const model of selectedFoundationModels) {
-      if (!initialFoundationModels.has(model)) {
+    const foundationModelsArray = Array.from(selectedFoundationModels);
+    for (let i = 0; i < foundationModelsArray.length; i++) {
+      if (!initialFoundationModels.has(foundationModelsArray[i])) {
         return true;
       }
     }
@@ -737,8 +738,9 @@ const AutoRAG: React.FunctionComponent = () => {
     if (selectedEmbeddingModels.size !== initialEmbeddingModels.size) {
       return true;
     }
-    for (const model of selectedEmbeddingModels) {
-      if (!initialEmbeddingModels.has(model)) {
+    const embeddingModelsArray = Array.from(selectedEmbeddingModels);
+    for (let i = 0; i < embeddingModelsArray.length; i++) {
+      if (!initialEmbeddingModels.has(embeddingModelsArray[i])) {
         return true;
       }
     }

@@ -11,7 +11,7 @@ export const usePromptVariables = (promptText: string): string[] => {
     const matches = promptText.matchAll(regex);
     const variables = Array.from(matches, (m) => m[1]);
     // Remove duplicates
-    return [...new Set(variables)];
+    return Array.from(new Set(variables));
   }, [promptText]);
 };
 

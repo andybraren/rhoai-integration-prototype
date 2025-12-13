@@ -4,7 +4,7 @@ import { Prompt, PromptVersion } from './types';
 const extractVariables = (text: string): string[] => {
   const regex = /\{\{\s*(\w+)\s*\}\}/g;
   const matches = text.matchAll(regex);
-  return [...new Set(Array.from(matches, m => m[1]))];
+  return Array.from(new Set(Array.from(matches, m => m[1])));
 };
 
 // Mock prompt data for 10 business use cases
